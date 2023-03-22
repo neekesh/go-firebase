@@ -6,6 +6,7 @@ import (
 	"letschat/infrastructure"
 	"letschat/models"
 	"letschat/responses"
+	"letschat/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -69,6 +70,7 @@ func (cc MessageController) Delete(c *gin.Context) {
 }
 
 func (mc MessageController) FindAll(c *gin.Context) {
+	pagination := utils.BuildPagination(c)
 	roomId := c.Param("roomid")
 	if len(roomId) == 0 {
 		msg := "Please send roomId id "
@@ -77,11 +79,13 @@ func (mc MessageController) FindAll(c *gin.Context) {
 		responses.HandleError(c, err)
 		return
 	}
-	sd, err := mc.messageService.FindAll(roomId)
+	sd, nextCursor, err := mc.messageService.FindAll(pagination, roomId)
+
 	if err != nil {
 		mc.logger.Zap.Error("Error finding all Message: ", err.Error())
 		responses.HandleError(c, err)
 		return
 	}
-	responses.JSON(c, http.StatusOK, sd)
+	responses.JSONCursor(c, http.StatusOK, sd, nextCursor)
+
 }
