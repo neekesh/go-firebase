@@ -26,6 +26,12 @@ func SuccessJSON(c *gin.Context, statusCode int, data interface{}) {
 func JSONCount(c *gin.Context, statusCode int, data interface{}, count int64) {
 	c.JSON(statusCode, gin.H{"data": data, "count": count})
 }
+
+// JSONCursor : json response functions
+func JSONCursor(c *gin.Context, statusCode int, data interface{}, cursor string) {
+	c.JSON(statusCode, gin.H{"data": data, "cursor": cursor})
+}
+
 func JSONCountThread(c *gin.Context, statusCode int, data interface{}, count int64, image string, title string) {
 	c.JSON(statusCode, gin.H{"data": data, "count": count, "image": image, "title": title})
 }

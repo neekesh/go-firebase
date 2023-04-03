@@ -12,8 +12,8 @@ jobs:
           name: Initialize Env file
           command:  |
             echo "
-              SERVER_PORT=$SERVER_PORT
               JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
+              SERVER_PORT=$SERVER_PORT
               JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
               JWT_ACCESS_TOKEN_EXPIRES_AT=$JWT_ACCESS_TOKEN_EXPIRES_AT
               JWT_REFRESH_TOKEN_EXPIRES_AT=$JWT_REFRESH_TOKEN_EXPIRES_AT
@@ -42,18 +42,17 @@ jobs:
           name: Initialize Env file
           command:  |
             echo "
-              SERVER_PORT=$SERVER_PORT
               JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
               JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
               JWT_ACCESS_TOKEN_EXPIRES_AT=$JWT_ACCESS_TOKEN_EXPIRES_AT
               JWT_REFRESH_TOKEN_EXPIRES_AT=$JWT_REFRESH_TOKEN_EXPIRES_AT
             " > .env
-
+      
       - run:
           name: Authenticating and configuring the Google Cloud Platform
           command: |
-            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project ${GCLOUD_PROJECT_ID}
+            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account  --key-file=-
+            gcloud --quiet config set project $GCLOUD_PROJECT_ID
 
       - deploy:
           name: Deploy to Google App Engine
@@ -66,7 +65,7 @@ workflows:
   dev_workflow:
     jobs:
       - build:
-          context: chatapp_dev
+          context: chat_app_dev
           filters:
             branches:
               only:
@@ -74,11 +73,10 @@ workflows:
                 - /LEAR-.*/
 
       - deploy_to_develop:
-          context: chatapp_dev
+          context: chat_app_dev
           filters:
             branches:
               only:
                 - main
-                - /LEAR-.*/
           requires:
             - build

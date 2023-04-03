@@ -39,12 +39,9 @@ func bootstrap(
 ) {
 	appStop := func(context.Context) error {
 		logger.Zap.Info("Stopping Application")
-
 		// conn.Close()
 		return nil
 	}
-	routes.Setup()
-	handler.Gin.Run(":" + env.ServerPort)
 
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {

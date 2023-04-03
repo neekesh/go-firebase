@@ -1,5 +1,5 @@
-env: standard
-runtime: go119
+env: flex
+runtime: custom
 service: backend
 handlers:
   - url: /.*

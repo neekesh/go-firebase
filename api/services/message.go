@@ -4,6 +4,7 @@ import (
 	"letschat/api/repository"
 	"letschat/infrastructure"
 	"letschat/models"
+	"letschat/utils"
 )
 
 type MessageService struct {
@@ -28,6 +29,6 @@ func (c MessageService) Create(message models.MessageM) error {
 func (c MessageService) Delete(id string) error {
 	return c.messagerepository.Delete(id)
 }
-func (c MessageService) FindAll(roomId string) (*[]models.MessageM, error) {
-	return c.messagerepository.FindAll(roomId)
+func (c MessageService) FindAll(pagination utils.Pagination, roomId string) (*[]models.MessageM,string, error) {
+	return c.messagerepository.FindAll(pagination, roomId)
 }
